@@ -1,23 +1,3 @@
-"""
-StreamScout & GigHunt — FastAPI Application
-=============================================
-RESTful API for the streamer discovery engine and gig finder.
-
-Endpoints
----------
-- ``GET  /api/streamers``        — Paginated list with filters
-- ``GET  /api/streamers/{id}``   — Detail view
-- ``PATCH /api/leads/{id}``      — Update lead status & notes
-- ``POST /api/scan/trigger``     — Manually trigger Twitch scan
-- ``GET  /api/gigs``             — GigHunt feed
-- ``POST /api/gigs/search``      — On-demand Twitter/Reddit search
-- ``GET  /health``               — Healthcheck
-
-Run locally::
-
-    uvicorn main:app --reload --port 8000
-"""
-
 from __future__ import annotations
 
 import asyncio
