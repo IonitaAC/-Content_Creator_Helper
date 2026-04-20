@@ -1,10 +1,3 @@
-"""
-StreamScout & GigHunt — SQLAlchemy ORM Models
-===============================================
-All core entities: Streamer, YouTubeChannel, SocialPost, Lead.
-Uses async-compatible mapped_column style (SQLAlchemy 2.0+).
-"""
-
 from __future__ import annotations
 
 import enum
