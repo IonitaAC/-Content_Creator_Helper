@@ -1,12 +1,3 @@
-"""
-StreamScout & GigHunt — Celery Tasks
-======================================
-Background tasks triggered by the Beat schedule or manually via API.
-
-Each task creates its own DB session (sync, since Celery workers
-are synchronous) and runs the appropriate pipeline.
-"""
-
 from __future__ import annotations
 
 import asyncio
