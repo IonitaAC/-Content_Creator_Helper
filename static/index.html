@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamScout — Command Center</title>
+  <meta name="description"
+    content="StreamScout: Zero-cost streamer discovery engine — find streamers with NO YouTube presence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css?v=3">
+</head>
+
+<body>
+  <div class="app">
+    <!-- ── Sidebar ───────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-text">StreamScout</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-module="scanner" id="nav-scanner">
+          <span class="nav-icon">📡</span>
+          <span class="nav-label">Streamer Scanner</span>
+        </button>
+        <button class="nav-btn" data-module="gighunt" id="nav-gighunt">
+          <span class="nav-icon">💼</span>
+          <span class="nav-label">Gig Hunt</span>
+        </button>
+        <button class="nav-btn" data-module="settings" id="nav-settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="api-health" id="apiHealth">
+          <span class="health-dot" id="healthDot"></span>
+          <span class="health-text" id="healthText">Checking…</span>
+        </div>
+        <button class="sidebar-collapse-btn" id="sidebarToggle" title="Toggle sidebar">‹</button>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ─────────────────────────────────── -->
+    <main class="content">
+
+      <!-- Activity Island -->
+      <div class="activity-island hidden" id="activityIsland">
+        <div class="island-content">
+          <div class="island-progress">
+            <div class="island-progress-bar" id="islandBar"></div>
+          </div>
+          <span class="island-text" id="islandText">Initializing…</span>
+          <button class="island-close" id="islandClose" title="Dismiss">✕</button>
+        </div>
+      </div>
+
+      <!-- ═══ Module A: Streamer Scanner ═══ -->
+      <section class="module active" id="module-scanner">
+        <header class="module-header">
+          <div class="module-title">
+            <h1>Streamer Discovery</h1>
+            <span class="module-subtitle">Find streamers with zero YouTube presence — 3-tier verification</span>
+          </div>
+          <div class="module-controls">
+            <div class="filter-chips" id="filterChips">
+              <button class="chip active" data-filter="leads" id="chipLeads">
+                <span class="chip-dot lead"></span> Verified Leads
+              </button>
+              <button class="chip" data-filter="active" id="chipActive">
+                <span class="chip-dot active-yt"></span> Active YT
+              </button>
+              <button class="chip" data-filter="clippers" id="chipClippers">
+                <span class="chip-dot clipped"></span> Has Clippers
+              </button>
+              <button class="chip" data-filter="all" id="chipAll">
+                <span class="chip-dot all"></span> All
+              </button>
+            </div>
+            <select class="control-select" id="sortSelect">
+              <option value="avg_viewers">Sort: Viewers ↓</option>
+              <option value="follower_count">Sort: Followers ↓</option>
+              <option value="last_scanned_at">Sort: Recent ↓</option>
+            </select>
+            <button class="btn btn-primary" id="startScanBtn">
+              <span class="btn-icon">📡</span> Start Scan
+            </button>
+          </div>
+        </header>
+
+        <!-- Scan Summary -->
+        <div class="scan-summary hidden" id="scanSummary">
+          <div class="summary-stat">
+            <span class="summary-value" id="sumTotal">0</span>
+            <span class="summary-label">Scanned</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-stat">
+            <span class="summary-value text-green" id="sumLeads">0</span>
+            <span class="summary-label">Verified Leads</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-stat">
+            <span class="summary-value text-red" id="sumRejected">0</span>
+            <span class="summary-label">Rejected</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-stat tier-info">
+            <span class="summary-label">Filtering</span>
+            <span class="tier-list">
+              <span class="tier-tag t1">T1: YT Link (1w)</span>
+              <span class="tier-tag t2">T2: Name Search (1mo)</span>
+              <span class="tier-tag t3">T3: Clips (1mo)</span>
+            </span>
+          </div>
+        </div>
+
+        <div id="streamerList" class="streamer-list">
+          <!-- JS renders here -->
+        </div>
+        <div id="streamerPagination" class="pagination"></div>
+      </section>
+
+      <!-- ═══ Module B: Gig Hunt ═══ -->
+      <section class="module" id="module-gighunt">
+        <header class="module-header">
+          <div class="module-title">
+            <h1>Gig Finder</h1>
+            <span class="module-subtitle">The Feed — Live hiring posts from across the web</span>
+          </div>
+          <div class="module-controls">
+            <div class="platform-toggles">
+              <button class="platform-btn active" data-platform="reddit" id="toggleReddit">👽 Reddit</button>
+              <button class="platform-btn active" data-platform="twitter" id="toggleTwitter">✖️ Twitter / X</button>
+            </div>
+            <div class="timeframe-slider" id="timeframeSlider">
+              <button class="tf-btn" data-tf="week">1 Week</button>
+              <button class="tf-btn active" data-tf="month">1 Month</button>
+              <button class="tf-btn" data-tf="3months">3 Months</button>
+              <button class="tf-btn" data-tf="6months">6 Months</button>
+            </div>
+            <button class="btn btn-accent" id="searchGigsBtn">
+              <span class="btn-icon">🔍</span> Search Gigs
+            </button>
+          </div>
+        </header>
+
+        <div id="gigFeed" class="gig-feed">
+          <!-- JS renders here -->
+        </div>
+        <div id="gigPagination" class="pagination"></div>
+      </section>
+
+      <!-- ═══ Module C: Settings ═══ -->
+      <section class="module" id="module-settings">
+        <header class="module-header">
+          <div class="module-title">
+            <h1>Settings</h1>
+            <span class="module-subtitle">API Keys &amp; Configuration Status</span>
+          </div>
+        </header>
+        <div id="settingsGrid" class="settings-grid"></div>
+      </section>
+
+      <!-- System Log -->
+      <div class="system-log" id="systemLog">
+        <div class="log-bar" id="logBar">
+          <span>📋 System Logs</span>
+          <span class="log-count" id="logCount">0</span>
+        </div>
+        <div class="log-panel hidden" id="logPanel">
+          <div class="log-entries" id="logEntries"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/app.js?v=3"></script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+# ── Secrets ──
+.env
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# ── Database ──
+*.db
+
+# ── Celery ──
+celerybeat-schedule*
+celery_broker/
+celery_results/
+control/
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ──
+.DS_Store
+Thumbs.db
